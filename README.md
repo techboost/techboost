@@ -20,7 +20,7 @@ You will need the following things properly installed on your computer.
 * `npm install`
 * `bower install`
 
-* On OSX, you can install Watchman using Homebrew:'brew install watchman'(Optional)
+* On OSX, you can install Watchman using Homebrew:`brew install watchman`(Optional)
 
 ## Running / Development
 
