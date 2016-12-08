@@ -1,5 +1,243 @@
 $primary: "teal";
-$accent: "light-green";
-$warn: "pink";
+$accent: "pink";
+$warn: "red";
 
 @import 'ember-paper';
+
+* {
+  box-sizing: border-box;
+}
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-regular.otf");
+  src: url("/assets/fonts/sasa-regular.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-regular-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-medium.otf");
+  src: url("/assets/fonts/sasa-medium.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-medium-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-medium-webfont.woff") format("woff");
+  font-weight: bold;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-bold.otf");
+  src: url("/assets/fonts/sasa-bold.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-bold-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-bold-webfont.woff") format("woff");
+  font-weight: 800;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-light.otf");
+  src: url("/assets/fonts/sasa-light.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-light-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-light-webfont.woff") format("woff");
+  font-weight: 100;
+  font-style: normal
+}
+html {
+  font-size: 10px;
+}
+
+body {
+  background: #795548;
+  color: #fff;
+  font-family: "sasa";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: #fff;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+ul {
+  font-family: "sasa";
+  font-size: 1.6em;
+  letter-spacing: 0.05em;
+}
+
+li {
+  list-style: none;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  padding: 3em 0 0;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  -webkit-transition: padding 0.3s;
+  transition: padding 0.3s;
+}
+
+.header-cta-button:before, .header-cta-button:after {
+  content: "";
+  display: table;
+}
+Pseudo ::after element
+.header-cta-button:after {
+  clear: both;
+}
+.header-cta-button:before, .header-cta-button:after {
+  content: "";
+  display: table;
+}
+
+.header-container {
+  position: relative;
+  z-index: 0;
+  padding: 0 3em;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.header-container:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  -webkit-transition: background 1s;
+  transition: background 1s;
+}
+
+.header-logo-link {
+  font-size: 56px;
+  font-size: 5.6rem;
+  line-height: 1;
+  -webkit-transition: color 1s;
+  transition: color 1s;
+}
+
+.header-logo-link [class^=icon-], .header-logo-link [class*=" icon-"] {
+  display: block;
+}
+
+.header-cta-button {
+  min-height: 1px;
+  zoom: 1;
+  overflow: visible !important;
+}
+
+.header-btn {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 15px;
+  font-size: 1.5rem;
+  border: .13333em solid #fff;
+  padding: .46667em .66667em;
+  text-decoration: none;
+  max-width: 16.66667em;
+}
+
+.header-btn-lang {
+  font-size: 11px;
+  font-size: 1.1rem;
+  border: .18182em solid #fff;
+  padding: .81818em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.header-btn-lang, .header-btn {
+  display: block;
+  float: right;
+  font-weight: bold;
+  -webkit-transition: color 1s, border 1s;
+  transition: color 1s, border 1s;
+  position: relative;
+  z-index: 0;
+}
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.menu {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  font-size: 10px;
+  font-size: 1rem;
+}
+
+.menu-item {
+  display: inline-block;
+  margin: 0 4em;
+}
+
+@media only screen and (max-width: 1400px) {
+  .menu-item {
+    margin: 0 2em;
+  }
+}
+
+.menu-item a {
+  font-family: "sasa";
+  font-size: 1.2em;
+  letter-spacing: 0.5em;
+  margin-right: -0.5em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  -webkit-transition: color 1s;
+  transition: color 1s;
+  display: inline-block;
+  position: relative;
+  z-index: 0;
+}
+
+.menu-item a:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 0.5em;
+  margin-left: -.25em;
+  -webkit-transition: width 0.3s, background 0.3s;
+  transition: width 0.3s, background 0.3s;
+  background: rgba(242,173,130,0.75);
+}
+
+.menu-meta .menu-item a {
+  text-transform: none;
+  font-weight: 100;
+  letter-spacing: 0.1em;
+  padding-right: 5px;
+}
+
