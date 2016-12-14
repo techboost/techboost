@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-regular.otf");
+  src: url("/assets/fonts/sasa-regular.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-regular-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-medium.otf");
+  src: url("/assets/fonts/sasa-medium.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-medium-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-medium-webfont.woff") format("woff");
+  font-weight: bold;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-bold.otf");
+  src: url("/assets/fonts/sasa-bold.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-bold-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-bold-webfont.woff") format("woff");
+  font-weight: 800;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'sasa';
+  src: url("/assets/fonts/sasa-light.otf");
+  src: url("/assets/fonts/sasa-light.otf?#iefix") format("embedded-opentype"), url("/assets/fonts/sasa-light-webfont.woff2") format("woff2"), url("/assets/fonts/sasa-light-webfont.woff") format("woff");
+  font-weight: 100;
+  font-style: normal
+}
+html {
+  font-size: 10px;
+}
+
+body {
+  background: #795548;
+  color: #fff;
+  font-family: "sasa";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: #fff;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+a:active, a:hover {
+  outline: 0;
+}
+
+ul {
+  font-family: "sasa";
+  font-size: 1.6em;
+  letter-spacing: 0.05em;
+}
+
+li {
+  list-style: none;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
