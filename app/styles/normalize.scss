@@ -37,7 +37,6 @@ html {
 }
 
 body {
-  background: #795548;
   color: #fff;
   font-family: "sasa";
   -webkit-font-smoothing: antialiased;
@@ -68,5 +67,9 @@ li {
 ul, li {
   margin: 0;
   padding: 0;
+}
+
+.relative {
+  position: relative;
 }
 
