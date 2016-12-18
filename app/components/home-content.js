@@ -63,7 +63,7 @@ export default Ember.Component.extend({
     };
 
     let zoomOUt = function () {
-      let timeLine, zoomOutScene;
+      let timeLine, zoomOutSet, zoomOutScene, controler;
       timeLine = new TimelineMax();
       $(document).on("scrollmagic.destroy", function () {
         $(".js-fake-album-info, .js-home-background-fade, .js-zoom-out-fade, .js-zoom-out-trigger").removeAttr("style");
@@ -83,12 +83,96 @@ export default Ember.Component.extend({
           visibility: "",
           opacity: ""
         });
-        (null != zoomOutScene ? zoomOutScene.progress() : void 0) > .99 ? $(".js-home-background").css({
+        (null != zoomOutScene ? zoomOutScene.progress() : void 0) > 0.99 ? $(".js-home-background").css({
             visibility: "hidden",
             opacity: 0
         }) : void 0
       };
-      backGroundHidden();
+
+      zoomOutSet = function () {
+        let element, zoomOutFade, albumInfoFake, homeBgSize, homeBgFade;
+        timeLine.clear();
+        backGroundHidden();
+        if ($(".js-zoom-out-trigger").length) {
+          element = $(".js-album-list-album").first();
+
+          zoomOutFade = TweenMax.to(".js-zoom-out-fade", 0.5, {
+            opacity: 0,
+            ease: Power0.linear,
+            onComplete: function () {
+              return this.target.parent().css("visibility", "hidden")
+            },
+            onUpdate: function () {
+              return this.target.parent().css("visibility", "")
+            }
+          });
+
+          albumInfoFake = TweenMax.to(".js-fake-album-info", 0.5, {
+            opacity: 1,
+            ease: Power0.linear
+          });
+
+          homeBgSize = TweenMax.to(".js-home-background", 1, {
+            width: element.width(),
+            height: element.height(),
+            ease: Linear.easeInOut
+          });
+
+          homeBgFade = TweenMax.fromTo(".js-home-background-fade", 1, {
+            opacity: .8
+          }, {
+            opacity: 0,
+            ease: Linear.easeInOut
+          });
+
+          timeLine.add(zoomOutFade, 0.5);
+          timeLine.add(albumInfoFake, 1);
+          timeLine.add(homeBgSize, 0.5);
+          timeLine.add(homeBgFade, 0.5);
+        }
+      };
+
+      $(document).on("resize", function () {
+        zoomOutSet();
+        if (zoomOutScene) {
+          zoomOutScene.setTween(timeLine)
+        }
+      });
+
+      zoomOutSet();
+
+      zoomOutScene = new ScrollMagic.Scene({
+        triggerElement: ".js-zoom-out-trigger",
+        triggerHook: 0,
+        duration: 1.5 * $(window).height()
+      });
+
+      zoomOutScene.setPin(".js-zoom-out-trigger").setTween(timeLine);
+
+      zoomOutScene.on("end", function (t) {
+        return $(this.triggerElement()).css("visibility", "FORWARD" === t.scrollDirection ? "hidden" : "")
+      });
+
+      zoomOutScene.on("enter", function (t) {
+        return $(".js-home-background").css({visibility: "", opacity: ""})
+      });
+
+      zoomOutScene.on("leave", function (t) {
+        return 0 === t.progress ? $(".js-home-background").css({
+            height: "",
+            width: ""
+          }) : t.progress > .9 ? $(".js-home-background").css({visibility: "hidden", opacity: 0}) : void 0
+      });
+
+      zoomOutScene.on("progress", function (t) {
+        return $("body").toggleClass("mode-green", t.progress < .33333)
+      });
+
+      controler = new ScrollMagic.Controller();
+
+      controler.addScene([
+        zoomOutScene,
+      ]);
     };
 
     let albumSlider = function () {
@@ -288,10 +372,41 @@ export default Ember.Component.extend({
 
     };
 
+    let responsiveImage = function () {
+      let n;
+      n = function n(t) {
+        this.el = t;
+        this.$el = r(t);
+        this.media_queries = this.$el.data("src");
+        this.current_media = "";
+        this.setEvent();
+        this.setMedia();
+      };
+
+      $("img[data-src]").each(function () {
+        new n(this)
+      });
+
+      let a = {
+        setEvent: function () {
+          $(document).on("resize", $.proxy(this.setMedia, this))
+        }, setMedia: function () {
+          let t = "default", e = this;
+          for (let i in this.media_queries)"default" !== i && window.matchMedia(i).matches && (t = i);
+          this.current_media !== t && (this.el.onload = function () {
+            e.$el.trigger("image.change")
+          }, this.el.src = this.media_queries[t], this.current_media = t)
+        }
+      };
+
+      $.extend(n.property, a);
+    };
+
     ainmationScene();
-    // homeBgFade();
+    homeBgFade();
     zoomOUt();
     albumSlider();
     imgBackground();
+    responsiveImage();
   }
 });

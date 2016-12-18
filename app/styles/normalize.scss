@@ -82,3 +82,25 @@ ul, li {
   right: 0;
   z-index: -1;
 }
+
+.above-1 {
+  z-index: 1
+}
+
+h2 {
+  font-family: "sasa";
+  font-size: 65px;
+  font-size: 6.5rem;
+  line-height: 1;
+  font-weight: 100;
+  letter-spacing: 0.05em;
+  margin: 0 0 .53846em;
+}
+
+h5, .year-tag {
+  font-family: "sasa";
+  font-size: 22px;
+  font-size: 2.2rem;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
