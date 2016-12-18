@@ -22,5 +22,17 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  app.import("bower_components/gsap/src/uncompressed/TweenMax.js");
+  app.import("bower_components/gsap/src/uncompressed/TweenLite.js");
+  app.import("bower_components/gsap/src/uncompressed/TimelineMax.js");
+  app.import("bower_components/gsap/src/uncompressed/TimelineLite.js");
+  app.import("bower_components/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js");
+  app.import("bower_components/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js");
+  app.import("bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js");
+  app.import("bower_components/imgLiquid/js/imgLiquid.js");
+  app.import("bower_components/slick-carousel/slick/slick.min.js");
+
+  app.import("bower_components/slick-carousel/slick/slick-theme.css");
+  app.import("bower_components/slick-carousel/slick/slick.css");
   return app.toTree();
 };
