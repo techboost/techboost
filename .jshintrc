@@ -6,7 +6,10 @@
     "TimelineMax",
     "TweenMax",
     "ScrollMagic",
-    "Linear"
+    "Linear",
+    "Power0",
+    "Power1",
+    "$"
   ],
   "browser": true,
   "boss": true,

@@ -1,11 +1,7 @@
 {
   "name": "techboost",
   "dependencies": {
-    "ember": "~2.9.0",
-    "ember-cli-shims": "0.1.3",
-    "hammer.js": "^2.0.8",
-    "matchMedia": "0.2.0",
-    "slick-carousel": "^1.6.0",
-    "flickity": "^2.0.5"
+    "ember": "~2.10.0",
+    "ember-cli-shims": "0.1.3"
   }
 }

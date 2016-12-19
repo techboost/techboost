@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   didRender() {
     this._super(...arguments);
+
     let ainmationScene = function () {
       let timeLine, scrollTop, scrollBottom, scrollScene;
 
@@ -83,10 +84,13 @@ export default Ember.Component.extend({
           visibility: "",
           opacity: ""
         });
-        (null != zoomOutScene ? zoomOutScene.progress() : void 0) > 0.99 ? $(".js-home-background").css({
+
+        if (zoomOutScene && zoomOutScene.progress() > 0.99) {
+          $(".js-home-background").css({
             visibility: "hidden",
             opacity: 0
-        }) : void 0
+          });
+        }
       };
 
       zoomOutSet = function () {
@@ -100,10 +104,10 @@ export default Ember.Component.extend({
             opacity: 0,
             ease: Power0.linear,
             onComplete: function () {
-              return this.target.parent().css("visibility", "hidden")
+              return this.target.parent().css("visibility", "hidden");
             },
             onUpdate: function () {
-              return this.target.parent().css("visibility", "")
+              return this.target.parent().css("visibility", "");
             }
           });
 
@@ -119,7 +123,7 @@ export default Ember.Component.extend({
           });
 
           homeBgFade = TweenMax.fromTo(".js-home-background-fade", 1, {
-            opacity: .8
+            opacity: 0.8
           }, {
             opacity: 0,
             ease: Linear.easeInOut
@@ -135,7 +139,7 @@ export default Ember.Component.extend({
       $(document).on("resize", function () {
         zoomOutSet();
         if (zoomOutScene) {
-          zoomOutScene.setTween(timeLine)
+          zoomOutScene.setTween(timeLine);
         }
       });
 
@@ -150,22 +154,22 @@ export default Ember.Component.extend({
       zoomOutScene.setPin(".js-zoom-out-trigger").setTween(timeLine);
 
       zoomOutScene.on("end", function (t) {
-        return $(this.triggerElement()).css("visibility", "FORWARD" === t.scrollDirection ? "hidden" : "")
+        return $(this.triggerElement()).css("visibility", "FORWARD" === t.scrollDirection ? "hidden" : "");
       });
 
-      zoomOutScene.on("enter", function (t) {
-        return $(".js-home-background").css({visibility: "", opacity: ""})
+      zoomOutScene.on("enter", function () {
+        return $(".js-home-background").css({visibility: "", opacity: ""});
       });
 
       zoomOutScene.on("leave", function (t) {
         return 0 === t.progress ? $(".js-home-background").css({
             height: "",
             width: ""
-          }) : t.progress > .9 ? $(".js-home-background").css({visibility: "hidden", opacity: 0}) : void 0
+          }) : t.progress > 0.9 ? $(".js-home-background").css({visibility: "hidden", opacity: 0}) : void 0;
       });
 
       zoomOutScene.on("progress", function (t) {
-        return $("body").toggleClass("mode-green", t.progress < .33333)
+        return $("body").toggleClass("mode-green", t.progress < 0.33333);
       });
 
       controler = new ScrollMagic.Controller();
@@ -254,7 +258,7 @@ export default Ember.Component.extend({
               autoCSS: !1,
               ease: Linear.easeInOut,
               onUpdate: function () {
-                return coverFlow.css("perspective-origin", coverFlow.prop("perspective") + "% 50%")
+                return coverFlow.css("perspective-origin", coverFlow.prop("perspective") + "% 50%");
               }
             });
 
@@ -266,9 +270,9 @@ export default Ember.Component.extend({
             console.log("leftWidth: %s", leftWidth);
             if (e > 0) {
               listScale = TweenMax.fromTo(element, leftWidth, {
-                scaleX: .8,
-                scaleY: .8,
-                opacity: .6
+                scaleX: 0.8,
+                scaleY: 0.8,
+                opacity: 0.6
               }, {
                 scaleX: 1,
                 scaleY: 1,
@@ -294,9 +298,9 @@ export default Ember.Component.extend({
                 scaleY: 1,
                 opacity: 1
               }, {
-                scaleX: .8,
-                scaleY: .8,
-                opacity: .6,
+                scaleX: 0.8,
+                scaleY: 0.8,
+                opacity: 0.6,
                 immediateRender: !1,
                 ease: Power1.easeIn
               });
@@ -323,12 +327,15 @@ export default Ember.Component.extend({
       });
 
       albumListSlider();
+
       console.log("duration: %s", 500 * $(".js-album-list").find(".js-album-list-album").length);
+
       albumListSliderScene = new ScrollMagic.Scene({
         triggerElement: ".js-album-list",
         triggerHook: 0,
         duration: 500 * $(".js-album-list").find(".js-album-list-album").length
       });
+
       albumListSliderScene.setPin(".js-album-list").setTween(timeLine);
       albumListSliderScene.current_tween = timeLine;
 
@@ -336,70 +343,38 @@ export default Ember.Component.extend({
         return 0 === t.progress ? $(".js-home-background").css({
             height: "",
             width: ""
-          }) : 1 === t.progress ? $(".js-album-list-fixed").addClass("__ended") : void 0
+          }) : 1 === t.progress ? $(".js-album-list-fixed").addClass("__ended") : void 0;
       });
 
       albumListSliderScene.on("enter", function () {
-        return $(".js-album-list-fixed").removeClass("__ended")
+        return $(".js-album-list-fixed").removeClass("__ended");
       });
 
       let controller = new ScrollMagic.Controller();
 
       controller.addScene([
         albumListSliderScene,
-      ])
-
+      ]);
     };
 
     let imgBackground = function () {
-      let imgConctroller = function (e) {
+      let imgController = function (e) {
         e.each(function () {
           let element = $(this), liquidKillAt = element.data("liquid-kill-at");
           if (liquidKillAt) {
             element.css("background", '');
             element.find("img").first().css("display", "");
           } else {
-            element.imgLiquid()
+            element.imgLiquid();
           }
-        })
+        });
       };
 
       $(".js-cover").find("img").on("image.change", function () {
-        imgConctroller($(this).closest(".js-cover"))
+        imgController($(this).closest(".js-cover"));
       });
 
-      imgConctroller($(".js-cover"));
-
-    };
-
-    let responsiveImage = function () {
-      let n;
-      n = function n(t) {
-        this.el = t;
-        this.$el = r(t);
-        this.media_queries = this.$el.data("src");
-        this.current_media = "";
-        this.setEvent();
-        this.setMedia();
-      };
-
-      $("img[data-src]").each(function () {
-        new n(this)
-      });
-
-      let a = {
-        setEvent: function () {
-          $(document).on("resize", $.proxy(this.setMedia, this))
-        }, setMedia: function () {
-          let t = "default", e = this;
-          for (let i in this.media_queries)"default" !== i && window.matchMedia(i).matches && (t = i);
-          this.current_media !== t && (this.el.onload = function () {
-            e.$el.trigger("image.change")
-          }, this.el.src = this.media_queries[t], this.current_media = t)
-        }
-      };
-
-      $.extend(n.property, a);
+      imgController($(".js-cover"));
     };
 
     ainmationScene();
@@ -407,6 +382,5 @@ export default Ember.Component.extend({
     zoomOUt();
     albumSlider();
     imgBackground();
-    responsiveImage();
   }
 });
