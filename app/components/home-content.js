@@ -33,6 +33,10 @@ export default Ember.Component.extend({
 
       scrollScene.setTween(timeLine);
 
+      scrollScene.on("progress", function (t) {
+        return t.progress <= 0.5 ? $("body").removeClass("mode-green") : $("body").addClass("mode-green");
+      });
+
       controller.addScene([
         scrollScene,
       ]);
@@ -371,10 +375,60 @@ export default Ember.Component.extend({
       };
 
       $(".js-cover").find("img").on("image.change", function () {
+        console.log("js-cover test");
+
         imgController($(this).closest(".js-cover"));
       });
 
       imgController($(".js-cover"));
+    };
+
+    let sectionWatcherPlugin = function (t ,e) {
+
+    };
+
+    let sectionWatcher = function () {
+
+
+      let sectionWatcherMain, sectionWatcherExtend;
+
+      sectionWatcherMain = function () {
+        let sectionWatcherPlugin;
+
+        this.init($);
+        this.onScroll($);
+
+        $(document).on("scroll", $.proxy(this.onScroll(), this));
+        sectionWatcherPlugin = $(".js-scroll-spy").data("sectionWatcher");
+
+        if (sectionWatcherPlugin) {
+          sectionWatcherPlugin.recalc();
+        }
+      };
+
+      sectionWatcherExtend = {
+        init: function (t) {
+          return this.$sidemenu = $(".js-side-menu"), this.menu_visible = !1, $(document).on("spy.activating", function (e) {
+            let i, n, r;
+            if ($.$el.parent().length && (r = e.target === document ? "" : e.target.innerText, n = $(".js-scroll-spy-current"), n.length))return i = n.clone().toggleClass("js-scroll-spy-current __js-copy").text(r).insertAfter(n), new TimelineMax({autoRemoveChildren: !0}).fromTo(n[0], .5, {
+              rotationX: "0deg",
+              opacity: 1
+            }, {rotationX: "90deg", opacity: 0}, 0).fromTo(i[0], .5, {
+              rotationX: "-90deg",
+              opacity: 0
+            }, {rotationX: "0deg", opacity: 1}, 0).addCallback(function () {
+              return i.remove(), n.text(r).removeAttr("style")
+            })
+          })
+        },
+        onScroll: function () {
+          let t, e;
+          return t = $(window).scrollTop(), e = $(window).height(), this.menu_visible === !1 && t >= e / 2 ? (this.$sidemenu.stop().fadeIn(300), this.menu_visible = !0) : this.menu_visible && e / 2 > t ? (this.$sidemenu.stop().fadeOut(300), this.menu_visible = !1) : void 0
+        }
+      };
+
+      $.extend(sectionWatcherMain.prototype, sectionWatcherExtend);
+      new sectionWatcherMain;
     };
 
     ainmationScene();
@@ -382,5 +436,6 @@ export default Ember.Component.extend({
     zoomOUt();
     albumSlider();
     imgBackground();
+    sectionWatcher();
   }
 });

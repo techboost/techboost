@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
 @font-face {
   font-family: 'sasa';
   src: url("/assets/fonts/sasa-regular.otf");
@@ -32,6 +33,7 @@
   font-weight: 100;
   font-style: normal
 }
+
 html {
   font-size: 10px;
 }
@@ -89,7 +91,6 @@ ul, li {
 
 h2 {
   font-family: "sasa";
-  font-size: 65px;
   font-size: 6.5rem;
   line-height: 1;
   font-weight: 100;
@@ -99,8 +100,16 @@ h2 {
 
 h5, .year-tag {
   font-family: "sasa";
-  font-size: 22px;
   font-size: 2.2rem;
   letter-spacing: 0.05em;
   margin: 0;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+img {
+  border: 0;
 }
