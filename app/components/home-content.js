@@ -28,7 +28,7 @@ export default Ember.Component.extend({
       scrollScene = new ScrollMagic.Scene({
         triggerElement: ".js-text-scroll-trigger",
         triggerHook: 1,
-        duration:$(".js-text-scroll-trigger").height() + $(window).height()
+        duration: $(".js-text-scroll-trigger").height() + $(window).height()
       });
 
       scrollScene.setTween(timeLine);
@@ -208,7 +208,7 @@ export default Ember.Component.extend({
             x: scrollFromWidth,
             ease: Power0.easeNone
           }, {
-            x:scrollToWidth,
+            x: scrollToWidth,
             ease: Power0.easeNone
           });
 
@@ -218,9 +218,6 @@ export default Ember.Component.extend({
 
           target.each(function () {
             let t;
-            t = $(this);
-            console.log("sliderWidth%s", sliderWidth - parseInt(t.css("margin-left")));
-            console.log("sliderWidth%s", sliderWidth - parseInt(t.css("margin-right")));
 
             return t = $(this), sliderWidth -= parseInt(t.css("margin-left")), sliderWidth -= parseInt(t.css("margin-right"));
 
@@ -270,8 +267,6 @@ export default Ember.Component.extend({
 
             timeLine.add(jsCoverFlow, 0);
 
-            console.log("sumWidth: %s", sumWidth);
-            console.log("leftWidth: %s", leftWidth);
             if (e > 0) {
               listScale = TweenMax.fromTo(element, leftWidth, {
                 scaleX: 0.8,
@@ -296,7 +291,6 @@ export default Ember.Component.extend({
             }
 
             if (e < target.length - 1) {
-              console.log("rightWidth: %s", rightWidth);
               listScale = TweenMax.fromTo(element, rightWidth, {
                 scaleX: 1,
                 scaleY: 1,
@@ -331,8 +325,6 @@ export default Ember.Component.extend({
       });
 
       albumListSlider();
-
-      console.log("duration: %s", 500 * $(".js-album-list").find(".js-album-list-album").length);
 
       albumListSliderScene = new ScrollMagic.Scene({
         triggerElement: ".js-album-list",
@@ -375,17 +367,101 @@ export default Ember.Component.extend({
       };
 
       $(".js-cover").find("img").on("image.change", function () {
-        console.log("js-cover test");
-
         imgController($(this).closest(".js-cover"));
       });
 
       imgController($(".js-cover"));
     };
 
-    let sectionWatcherPlugin = function (t ,e) {
+    // let sectionWatcherPlugin = function (t, e) {
+    //   t.fn.sectionWatcher = function (i) {
+    //     let distance, list, _this = this, windowEl = $(window), bodyEl = $("body"),
+    //       jQueryExt = t.extend({}, e, i), p = !1;
+    //
+    //     this.each(function () {
+    //       if (this.hash) {
+    //         let element = t(this), i = t(this.hash || document.body);
+    //         if (i.length) {
+    //           let object = {$anchor: e, $target: i};
+    //           list.push(object);
+    //           element.on("click", function (i) {
+    //             if (bodyEl.hasClass("spy-scrolling")) {
+    //               i.preventDefault();
+    //               _this.closest(jQueryExt.apply_to_closest).removeClass(jQueryExt.active_class);
+    //               element.closest(jQueryExt.apply_to_closest).addClass(jQueryExt.active_class);
+    //               bodyEl.addClass("spy-scrolling");
+    //               let scrollHeight = Math.abs(windowEl.scrollTop() - object.position),
+    //                 scrollHeightCopy = scrollHeight;
+    //               scrollHeightCopy -= 0;
+    //               scrollHeightCopy *= 3e3;
+    //               scrollHeightCopy = Math.max(500, Math.min(3e3, scrollHeightCopy));
+    //
+    //               $("html,body").animate({scrollTop: object.position + 1}, scrollHeightCopy, function () {
+    //                 bodyEl.removeClass("spy-scrolling");
+    //                 // s();
+    //               });
+    //
+    //             }
+    //           });
+    //
+    //         }
+    //       }
+    //     });
+    //   }
+    // };
 
+    let sectionWatcherPlugin = function (t, e) {
+      t.fn.sectionWatcher = function (i) {
+        function n() {
+          p || (t.each(l, function () {
+            "function" == typeof d.scrollto_offset ? this.position = d.scrollto_offset(this.$anchor, this.$target) : "number" == typeof d.scrollto_offset ? this.position = this.$target.offset().top - d.scrollto_offset : this.position = this.$target.offset().top
+          }), o(), s())
+        }
+
+        function s() {
+          if (!p && !h.hasClass("spy-scrolling")) {
+            var e, i = c.scrollTop(), n = c.height();
+            t.each(l, function (t) {
+              n * d.offset_top + i > this.position - 1 && (e = this)
+            }), u.not(e && e.$anchor).closest(d.apply_to_closest).removeClass(d.active_class), e ? (e.$anchor.closest(d.apply_to_closest).addClass(d.active_class), e !== a && e.$anchor.trigger("spy.activating")) : e !== a && t(document).trigger("spy.activating"), a = e
+          }
+        }
+
+        function o() {
+          l.sort(function (t, e) {
+            return t.position - e.position
+          })
+        }
+
+        let a, l = [], c = $(window), u = this, h = $("body"), d = t.extend({}, e, i), p = !1;
+        this.each(function () {
+          if (this.hash) {
+            let e = t(this), i = t(this.hash || document.body);
+            if (i.length) {
+              let n = {$anchor: e, $target: i};
+              l.push(n), e.on("click", function (i) {
+                if (!h.hasClass("spy-scrolling")) {
+                  i.preventDefault(), u.closest(d.apply_to_closest).removeClass(d.active_class), e.closest(d.apply_to_closest).addClass(d.active_class), h.addClass("spy-scrolling");
+                  let r = Math.abs(c.scrollTop() - n.position), o = 500, a = 3e3, l = 0, p = 3e3, f = r;
+                  f -= l, f *= a, f /= p, f = Math.max(o, Math.min(p, f)), t("html,body").animate({scrollTop: n.position + 1}, f, function () {
+                    h.removeClass("spy-scrolling"), s()
+                  })
+                }
+              })
+            }
+          }
+        }), o(), $(window).on("resize", n), $(document).on("scroll", s), n();
+        let f = {
+          recalc: n, deactivate: function () {
+            p = !0
+          }, activate: function () {
+            p = !1
+          }
+        };
+        return this.data("sectionWatcher", f), this
+      }
     };
+
 
     let sectionWatcher = function () {
 
@@ -395,10 +471,10 @@ export default Ember.Component.extend({
       sectionWatcherMain = function () {
         let sectionWatcherPlugin;
 
-        this.init($);
-        this.onScroll($);
+        this.init();
+        this.onScroll();
 
-        $(document).on("scroll", $.proxy(this.onScroll(), this));
+        $(document).on("scroll", $.proxy(this.onScroll, this));
         sectionWatcherPlugin = $(".js-scroll-spy").data("sectionWatcher");
 
         if (sectionWatcherPlugin) {
@@ -407,27 +483,70 @@ export default Ember.Component.extend({
       };
 
       sectionWatcherExtend = {
-        init: function (t) {
-          return this.$sidemenu = $(".js-side-menu"), this.menu_visible = !1, $(document).on("spy.activating", function (e) {
-            let i, n, r;
-            if ($.$el.parent().length && (r = e.target === document ? "" : e.target.innerText, n = $(".js-scroll-spy-current"), n.length))return i = n.clone().toggleClass("js-scroll-spy-current __js-copy").text(r).insertAfter(n), new TimelineMax({autoRemoveChildren: !0}).fromTo(n[0], .5, {
-              rotationX: "0deg",
-              opacity: 1
-            }, {rotationX: "90deg", opacity: 0}, 0).fromTo(i[0], .5, {
-              rotationX: "-90deg",
-              opacity: 0
-            }, {rotationX: "0deg", opacity: 1}, 0).addCallback(function () {
-              return i.remove(), n.text(r).removeAttr("style")
-            })
-          })
+        init: function () {
+          this.$sidemenu = $(".js-side-menu");
+          this.menu_visible = !1;
+
+          $(document).on("spy.activating", function (e) {
+            let targetInnerText, spyCurrent, spyCurrentCopy, timeline;
+
+            if (e.target === document) {
+              targetInnerText = "";
+            } else {
+              targetInnerText = e.target.innerText;
+            }
+
+            spyCurrent = $(".js-scroll-spy-current");
+
+            if ($(".js-scroll-spy").parent().length && spyCurrent.length) {
+              spyCurrentCopy = spyCurrent.clone().toggleClass("js-scroll-spy-current __js-copy").text(targetInnerText).insertAfter(spyCurrent);
+
+              timeline = new TimelineMax({autoRemoveChildren: !0});
+
+              timeline.fromTo(spyCurrent[0], 0.5, {
+                rotationX: "0deg",
+                opacity: 1
+              }, {
+                rotationX: "90deg", opacity: 0
+              }, 0);
+
+              timeline.fromTo(spyCurrentCopy[0], 0.5, {
+                rotationX: "-90deg",
+                opacity: 0
+              }, {
+                rotationX: "0deg",
+                opacity: 1
+              }, 0);
+
+              timeline.addCallback(function () {
+                spyCurrentCopy.remove();
+                spyCurrent.text(targetInnerText).removeAttr("style");
+              });
+            }
+          });
+
+          $(".js-scroll-spy").sectionWatcher();
         },
         onScroll: function () {
-          let t, e;
-          return t = $(window).scrollTop(), e = $(window).height(), this.menu_visible === !1 && t >= e / 2 ? (this.$sidemenu.stop().fadeIn(300), this.menu_visible = !0) : this.menu_visible && e / 2 > t ? (this.$sidemenu.stop().fadeOut(300), this.menu_visible = !1) : void 0
+          let scrollTop, height;
+          scrollTop = $(window).scrollTop();
+          height = $(window).height();
+
+          if (this.menu_visible === !1 && scrollTop >= height / 2) {
+            this.$sidemenu.stop().fadeIn(300);
+            this.menu_visible = !0;
+
+          } else {
+            if (this.menu_visible && height / 2 > scrollTop) {
+              this.$sidemenu.stop().fadeOut(300);
+              this.menu_visible = !1;
+            }
+          }
         }
       };
 
       $.extend(sectionWatcherMain.prototype, sectionWatcherExtend);
+
       new sectionWatcherMain;
     };
 
@@ -436,6 +555,7 @@ export default Ember.Component.extend({
     zoomOUt();
     albumSlider();
     imgBackground();
+    sectionWatcherPlugin($, {active_class: "spy-active", apply_to_closest: "*", offset_top: .25, scrollto_offset: !1});
     sectionWatcher();
   }
 });
