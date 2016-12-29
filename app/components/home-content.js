@@ -373,105 +373,121 @@ export default Ember.Component.extend({
       imgController($(".js-cover"));
     };
 
-    // let sectionWatcherPlugin = function (t, e) {
-    //   t.fn.sectionWatcher = function (i) {
-    //     let distance, list, _this = this, windowEl = $(window), bodyEl = $("body"),
-    //       jQueryExt = t.extend({}, e, i), p = !1;
-    //
-    //     this.each(function () {
-    //       if (this.hash) {
-    //         let element = t(this), i = t(this.hash || document.body);
-    //         if (i.length) {
-    //           let object = {$anchor: e, $target: i};
-    //           list.push(object);
-    //           element.on("click", function (i) {
-    //             if (bodyEl.hasClass("spy-scrolling")) {
-    //               i.preventDefault();
-    //               _this.closest(jQueryExt.apply_to_closest).removeClass(jQueryExt.active_class);
-    //               element.closest(jQueryExt.apply_to_closest).addClass(jQueryExt.active_class);
-    //               bodyEl.addClass("spy-scrolling");
-    //               let scrollHeight = Math.abs(windowEl.scrollTop() - object.position),
-    //                 scrollHeightCopy = scrollHeight;
-    //               scrollHeightCopy -= 0;
-    //               scrollHeightCopy *= 3e3;
-    //               scrollHeightCopy = Math.max(500, Math.min(3e3, scrollHeightCopy));
-    //
-    //               $("html,body").animate({scrollTop: object.position + 1}, scrollHeightCopy, function () {
-    //                 bodyEl.removeClass("spy-scrolling");
-    //                 // s();
-    //               });
-    //
-    //             }
-    //           });
-    //
-    //         }
-    //       }
-    //     });
-    //   }
-    // };
-
     let sectionWatcherPlugin = function (t, e) {
       t.fn.sectionWatcher = function (i) {
-        function n() {
-          p || (t.each(l, function () {
-            "function" == typeof d.scrollto_offset ? this.position = d.scrollto_offset(this.$anchor, this.$target) : "number" == typeof d.scrollto_offset ? this.position = this.$target.offset().top - d.scrollto_offset : this.position = this.$target.offset().top
-          }), o(), s())
-        }
+        let target, list = [], _this = this, windowEl = $(window), bodyEl = $("body"),
+          jQueryExt = t.extend({}, e, i), p = !1;
 
-        function s() {
-          if (!p && !h.hasClass("spy-scrolling")) {
-            var e, i = c.scrollTop(), n = c.height();
-            t.each(l, function (t) {
-              n * d.offset_top + i > this.position - 1 && (e = this)
-            }), u.not(e && e.$anchor).closest(d.apply_to_closest).removeClass(d.active_class), e ? (e.$anchor.closest(d.apply_to_closest).addClass(d.active_class), e !== a && e.$anchor.trigger("spy.activating")) : e !== a && t(document).trigger("spy.activating"), a = e
+        function offsetController() {
+          if (!p) {
+            t.each(list, function () {
+              if (typeof jQueryExt.scrollto_offset === "function") {
+                this.position = jQueryExt.scrollto_offset(this.$anchor, this.$target);
+              } else {
+                if (typeof jQueryExt.scrollto_offset === "number") {
+                  this.position = this.$target.offset().top - jQueryExt.scrollto_offset;
+                } else {
+                  this.position = this.$target.offset().top;
+                }
+              }
+            });
+            sortPosition();
+            scrollActivtingController();
           }
         }
 
-        function o() {
-          l.sort(function (t, e) {
-            return t.position - e.position
-          })
+        function scrollActivtingController() {
+          if (!p && !bodyEl.hasClass("spy-scrolling")) {
+            let el, windowScrollTop = windowEl.scrollTop(), windowHeight = windowEl.height();
+
+            t.each(list, function () {
+              if (windowHeight * jQueryExt.offset_top + windowScrollTop > this.position - 1) {
+                el = this;
+              }
+            });
+
+            _this.not(el && el.$anchor).closest(jQueryExt.apply_to_closest).removeClass(jQueryExt.active_class);
+
+            if (el) {
+              el.$anchor.closest(jQueryExt.apply_to_closest).addClass(jQueryExt.active_class);
+              if (el !== target) {
+              el.$anchor.trigger("spy.activating");
+              }
+            } else {
+              console.log("el !== target");
+
+              if (el !== target) {
+                $(document).trigger("spy.activating");
+              }
+            }
+            target = el;
+          }
         }
 
-        let a, l = [], c = $(window), u = this, h = $("body"), d = t.extend({}, e, i), p = !1;
+        function sortPosition() {
+          list.sort(function (t, e) {
+            return t.position - e.position;
+          });
+        }
+
         this.each(function () {
           if (this.hash) {
-            let e = t(this), i = t(this.hash || document.body);
+            let element = t(this), i = t(this.hash || document.body);
             if (i.length) {
-              let n = {$anchor: e, $target: i};
-              l.push(n), e.on("click", function (i) {
-                if (!h.hasClass("spy-scrolling")) {
-                  i.preventDefault(), u.closest(d.apply_to_closest).removeClass(d.active_class), e.closest(d.apply_to_closest).addClass(d.active_class), h.addClass("spy-scrolling");
-                  let r = Math.abs(c.scrollTop() - n.position), o = 500, a = 3e3, l = 0, p = 3e3, f = r;
-                  f -= l, f *= a, f /= p, f = Math.max(o, Math.min(p, f)), t("html,body").animate({scrollTop: n.position + 1}, f, function () {
-                    h.removeClass("spy-scrolling"), s()
-                  })
+              let object = {$anchor: element, $target: i};
+              list.push(object);
+              element.on("click", function (i) {
+                if (!bodyEl.hasClass("spy-scrolling")) {
+                  i.preventDefault();
+                  _this.closest(jQueryExt.apply_to_closest).removeClass(jQueryExt.active_class);
+                  element.closest(jQueryExt.apply_to_closest).addClass(jQueryExt.active_class);
+                  bodyEl.addClass("spy-scrolling");
+                  let scrollHeight = Math.abs(windowEl.scrollTop() - object.position),
+                    f = scrollHeight, o = 500, a = 3e3, l = 0, p = 3e3;
+
+                  f -= l;
+                  f *= a;
+                  f /= p;
+                  f = Math.max(o, Math.min(p, f));
+
+                  $("html,body").animate({scrollTop: object.position + 1}, f, function () {
+                    bodyEl.removeClass("spy-scrolling");
+                    scrollActivtingController();
+                  });
                 }
-              })
+              });
             }
           }
-        }), o(), $(window).on("resize", n), $(document).on("scroll", s), n();
-        let f = {
-          recalc: n, deactivate: function () {
-            p = !0
-          }, activate: function () {
-            p = !1
+        });
+
+        sortPosition();
+        $(window).on("resize", offsetController);
+        $(window).on("scroll", scrollActivtingController);
+        offsetController();
+
+        let data = {
+          recalc: offsetController,
+          deactivate: function () {
+            p = !0;
+          },
+          activate: function () {
+            p = !1;
           }
         };
-        return this.data("sectionWatcher", f), this
-      }
+
+        this.data("sectionWatcher", data);
+        return this;
+      };
     };
 
 
     let sectionWatcher = function () {
+      let SectionWatcherMain, sectionWatcherExtend;
 
-
-      let sectionWatcherMain, sectionWatcherExtend;
-
-      sectionWatcherMain = function () {
+      SectionWatcherMain = function () {
         let sectionWatcherPlugin;
 
-        this.init();
+        this.init(this);
         this.onScroll();
 
         $(document).on("scroll", $.proxy(this.onScroll, this));
@@ -483,22 +499,24 @@ export default Ember.Component.extend({
       };
 
       sectionWatcherExtend = {
-        init: function () {
+        init: function (t) {
           this.$sidemenu = $(".js-side-menu");
           this.menu_visible = !1;
 
           $(document).on("spy.activating", function (e) {
             let targetInnerText, spyCurrent, spyCurrentCopy, timeline;
 
-            if (e.target === document) {
-              targetInnerText = "";
-            } else {
-              targetInnerText = e.target.innerText;
-            }
 
+            if (t.$sidemenu.parent().length) {
+              if (e.target === document) {
+                targetInnerText = "";
+              } else {
+                targetInnerText = e.target.innerText;
+              }
+            }
             spyCurrent = $(".js-scroll-spy-current");
 
-            if ($(".js-scroll-spy").parent().length && spyCurrent.length) {
+            if (spyCurrent.length) {
               spyCurrentCopy = spyCurrent.clone().toggleClass("js-scroll-spy-current __js-copy").text(targetInnerText).insertAfter(spyCurrent);
 
               timeline = new TimelineMax({autoRemoveChildren: !0});
@@ -527,12 +545,13 @@ export default Ember.Component.extend({
 
           $(".js-scroll-spy").sectionWatcher();
         },
+
         onScroll: function () {
           let scrollTop, height;
           scrollTop = $(window).scrollTop();
           height = $(window).height();
 
-          if (this.menu_visible === !1 && scrollTop >= height / 2) {
+          if (this.menu_visible === false && scrollTop >= height / 2) {
             this.$sidemenu.stop().fadeIn(300);
             this.menu_visible = !0;
 
@@ -545,9 +564,9 @@ export default Ember.Component.extend({
         }
       };
 
-      $.extend(sectionWatcherMain.prototype, sectionWatcherExtend);
+      $.extend(SectionWatcherMain.prototype, sectionWatcherExtend);
 
-      new sectionWatcherMain;
+      new SectionWatcherMain();
     };
 
     ainmationScene();
@@ -555,7 +574,7 @@ export default Ember.Component.extend({
     zoomOUt();
     albumSlider();
     imgBackground();
-    sectionWatcherPlugin($, {active_class: "spy-active", apply_to_closest: "*", offset_top: .25, scrollto_offset: !1});
+    sectionWatcherPlugin($, {active_class: "spy-active", apply_to_closest: "*", offset_top: 0.25, scrollto_offset: !1});
     sectionWatcher();
   }
 });
