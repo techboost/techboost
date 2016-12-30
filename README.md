@@ -13,6 +13,15 @@ You will need the following things properly installed on your computer.
 * [Ember CLI](http://ember-cli.com/)
 * [PhantomJS](http://phantomjs.org/)
 
+## Use docker 
+Build your docker image
+
+``` docker build -t techboost:v1 . ```
+
+Then, run your docker container
+``` docker run -d -p 4200:4200 techboost:v1 ```
+
+
 ## Installation
 
 * `git clone <repository-url>` this repository
