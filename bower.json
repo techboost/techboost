@@ -2,6 +2,12 @@
   "name": "techboost",
   "dependencies": {
     "ember": "~2.10.0",
-    "ember-cli-shims": "0.1.3"
+    "ember-cli-shims": "0.1.3",
+    "gsap": "^1.19.0",
+    "hammer.js": "^2.0.8",
+    "imgLiquid": "^0.9.944",
+    "matchMedia": "0.2.0",
+    "scrollmagic": "ScrollMagic#^2.0.5",
+    "slick-carousel": "^1.6.0"
   }
 }

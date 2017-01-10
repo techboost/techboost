@@ -16,11 +16,13 @@ You will need the following things properly installed on your computer.
 ## Use docker 
 Build your docker image
 
-``` docker build -t techboost:v1 . ```
+``` docker build -t techboost:1.0.0 . ```
 
 Then, run your docker container
-``` docker run -d -p 4200:4200 techboost:v1 ```
+```  docker run -it --rm --name techboost -p 4200:4200 techboost:1.0.0 ```
 
+Access shell
+```docker exec -it techboost bash```
 
 ## Installation
 
